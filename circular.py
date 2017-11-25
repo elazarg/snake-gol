@@ -38,23 +38,4 @@ class Torus(tuple):
     def setall(self, v=None):
         for line in self:
             line.setall(v)
-    
-                    
-if __name__=='__main__':
-    x=CircArray(5)
-    x[0]=3
-    print(x[5])
-    print(x[2])
-    
-    x=CircArray([1,2,3])
-    x[0]=4
-    print(x)
-    print(x[1])
-    
-    z=Torus(2,3, default=8)
-    print(z)
-    print(z[1,1])
-    z[1,4]=4
-    print(z)
-    print(z[1,1])
-    
+

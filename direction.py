@@ -71,10 +71,11 @@ def make_direction(s, t):
 
 def get_char(s, me, t, i = 0):
     array = [MOVEMENT, MOVEMENT2]
-    if t and s:    return array[i][
-            (make_direction(s, me), make_direction(me, t))]
+    if t and s:
+        return array[i][(make_direction(s, me), make_direction(me, t))]
     if t:
         return TAIL
     if s:
         return DIC[make_direction(me, s)]
     return 'X'
+

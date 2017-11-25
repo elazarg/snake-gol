@@ -9,7 +9,7 @@ class _Body:
         self.next = nextt
         self.prev = prev
         self.pic = pic
-    
+
     def getyx(self):
         return self.yx
 
@@ -27,7 +27,8 @@ class _Body:
         if ( type(other) == tuple ):
             return self.yx == other
         return self.yx == other.yx
-    
+
+ 
 class Snake:
     Body = _Body
 
@@ -38,9 +39,10 @@ class Snake:
         self.eaten = 0
 
     def direct(self, d):
-        is_negative = lambda x, y: x[0] == -y[0] or x[1] == -y[1]
-        if d != None and not is_negative(d, self.dydx):
-            self.dydx = d
+        if d is not None:
+            is_negative = d[0] == -self.dydx[0] or d[1] == -self.dydx[1]
+            if not is_negative or len(self.tail) == 1:
+                self.dydx = d
         return self.dydx
     
     def check_status(self):
@@ -65,4 +67,4 @@ class Snake:
         
     def get_points(self):
         return [b.getyx() for b in self.tail]
-    
+
