@@ -24,40 +24,40 @@ RIGHTUP =   (RIGHT, UP)
 LEFTDOWN =  (LEFT,  DOWN)
 RIGHTDOWN = (RIGHT, DOWN)
 DIC = {
-    UP    : '^',
-    DOWN  : 'v',
-    LEFT  : '<',
-    RIGHT : '>',
+    UP    : '△',
+    DOWN  : '▽',
+    LEFT  : '◁',
+    RIGHT : '▷',
     STOP  : 'X',
 }
 TAIL = '+'
 MOVEMENT = {
     UPUP      : '|',
     DOWNDOWN  : '|',
-    LEFTLEFT  : '-',
-    RIGHTRIGHT: '-',
-    UPLEFT    : 'O',
-    UPRIGHT   : 'O',
-    DOWNLEFT  : 'O',
-    DOWNRIGHT : 'O',
-    LEFTUP    : 'O',
-    RIGHTUP   : 'O',
-    LEFTDOWN  : 'O',
-    RIGHTDOWN : 'O',
-}
-MOVEMENT2 = {
-    UPUP      : ';',
-    DOWNDOWN  : ';',
     LEFTLEFT  : '~',
     RIGHTRIGHT: '~',
-    UPLEFT    : '0',
-    UPRIGHT   : '0',
-    DOWNLEFT  : '0',
-    DOWNRIGHT : '0',
-    LEFTUP    : '0',
-    RIGHTUP   : '0',
-    LEFTDOWN  : '0',
-    RIGHTDOWN : '0',
+    UPLEFT    : '╮',
+    UPRIGHT   : '╭',
+    DOWNLEFT  : '╯',
+    DOWNRIGHT : '╰',
+    LEFTUP    : '╰',
+    RIGHTUP   : '╯',
+    LEFTDOWN  : '╭',
+    RIGHTDOWN : '╮',
+}
+MOVEMENT2 = {
+    UPUP      : ':',
+    DOWNDOWN  : ':',
+    LEFTLEFT  : '-',
+    RIGHTRIGHT: '-',
+    UPLEFT    : '╮',
+    UPRIGHT   : '╭',
+    DOWNLEFT  : '╯',
+    DOWNRIGHT : '╰',
+    LEFTUP    : '╰',
+    RIGHTUP   : '╯',
+    LEFTDOWN  : '╭',
+    RIGHTDOWN : '╮',
 }
 
 NEIGHBORS = set(itertools.product(range(-1, 2), range(-1, 2))) -{(0,0)}
@@ -72,10 +72,11 @@ def make_direction(s, t):
 def get_char(s, me, t, i = 0):
     array = [MOVEMENT, MOVEMENT2]
     if t and s:
-        return array[i][(make_direction(s, me), make_direction(me, t))]
+        return array[i][(make_direction(me, t), make_direction(s, me))]
     if t:
         return TAIL
     if s:
-        return DIC[make_direction(me, s)]
+        y, x = make_direction(me, s)
+        return DIC[(y, x)]
     return 'X'
 

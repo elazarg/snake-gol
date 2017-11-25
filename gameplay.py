@@ -33,9 +33,10 @@ class Gameplay:
         self.snake = Snake(self.gui.center)
         if not self.food:
             self.food[self.gui.center] = chr(0x1F34E)
-        
-    c=0
+
+    c = 0
     MAXBRICKS = 20
+
     def live_step(self):
         d = Counter()
         for yx in self.brickset:
@@ -57,7 +58,7 @@ class Gameplay:
         self.eaten += 1                
         while True:
             yx = self.gui.random_point()
-            if yx not in [x.getyx() for x in self.snake.tail] and yx not in self.brickset :
+            if yx not in [x.getyx() for x in self.snake.tail] and yx not in self.brickset:
                 self.food[yx] = make_fruit()
                 break
             

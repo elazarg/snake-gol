@@ -26,7 +26,6 @@ class Game:
         except:
             self.game = Gameplay()
             return False
-            #self.game.reset()
             
     def save(self):
         with open(filename, "wb") as f:
@@ -64,3 +63,4 @@ class Game:
             if not ok:
                 self.game.reset()
         assert self.game.snake != None
+

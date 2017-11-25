@@ -84,7 +84,7 @@ class Gui:
         
         self.write_status(snake.head, len(snake.tail), eaten, len(brickset) )
             
-    def brick_paint(self, brickset, c='#'):
+    def brick_paint(self, brickset, c='👽'):
         for yx in brickset:
             self.addstr(yx, c, RED, BOLD)
         
