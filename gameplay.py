@@ -4,14 +4,19 @@ Created on May 21, 2013
 @author: elazar
 '''
 from collections import Counter
+from random import randrange
 
 from snake import Snake
-#from circular import Torus
 import direction
   
 class Collision(Exception):
     __init__ = Exception.__init__
-  
+
+
+def make_fruit():
+    return chr(randrange(0x1F345, 0x1F354))
+
+
 class Gameplay: 
     def __init__(self):
         self.brickset = set()
@@ -27,7 +32,7 @@ class Gameplay:
             self.gui.clear(self.snake.get_points())
         self.snake = Snake(self.gui.center)
         if not self.food:
-            self.food[self.gui.center]='Q'
+            self.food[self.gui.center] = chr(0x1F34E)
         
     c=0
     MAXBRICKS = 20
@@ -53,7 +58,7 @@ class Gameplay:
         while True:
             yx = self.gui.random_point()
             if yx not in [x.getyx() for x in self.snake.tail] and yx not in self.brickset :
-                self.food[yx] = 'Q'
+                self.food[yx] = make_fruit()
                 break
             
     def step(self):
@@ -72,4 +77,4 @@ class Gameplay:
         self.gui.paint(self.brickset, self.food, self.snake, old_body, self.eaten)
         
         return self.snake.check_status() or self.snake.head in self.brickset
-        
+
