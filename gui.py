@@ -152,7 +152,7 @@ class Gui:
         self.statuswin.addstr(0, 0, fmt)
         self.statuswin.refresh()
         
-    def addstr(self, yx: Pair, ch: str = None, color: int = None, nice: int = NORMAL) -> None:
+    def addstr(self, yx: Pair, ch: Optional[str] = None, color: Optional[int] = None, nice: int = NORMAL) -> None:
         y, x = yx  
         att = curses.color_pair(color if color else 0) | nice
         if y >= 0 and x >= 0:

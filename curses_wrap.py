@@ -18,15 +18,42 @@ COLOR_YELLOW = curses.COLOR_YELLOW
 
 COLORS = 8
 
-delay_output = curses.delay_output
-color_pair = curses.color_pair
-start_color = curses.start_color
-init_pair = curses.init_pair
-curs_set = curses.curs_set
-flash = curses.flash
-use_default_colors = curses.use_default_colors
-flushinp = curses.flushinp
-wrapper = curses.wrapper
+
+def delay_output(delay: int) -> None:
+    curses.delay_output(delay)
+
+
+def color_pair(n: int) -> int:
+    return curses.color_pair(n)
+
+
+def start_color() -> None:
+    curses.start_color()  # type: ignore
+
+
+def init_pair(i: int, x: int, z: int) -> None:
+    curses.init_pair(i, x, z)
+
+
+def curs_set(n: int) -> None:
+    curses.curs_set(n)
+
+
+def flash() -> None:
+    curses.flash()
+
+
+def use_default_colors() -> None:
+    curses.use_default_colors()
+
+
+def flushinp() -> None:
+    curses.flushinp()
+
+
+def wrapper(func: typing.Callable[['CursesWindow'], None]) -> None:
+    curses.wrapper(func)  # type: ignore
+
 
 KEY_LEFT = curses.KEY_LEFT
 KEY_RIGHT = curses.KEY_RIGHT
@@ -52,6 +79,3 @@ class CursesWindow:
     def addch(self, y: int, x: int, ch: typing.Optional[str], color: int) -> None: pass
 
     def refresh(self) -> None: pass
-
-
-del curses
