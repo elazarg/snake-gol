@@ -1,4 +1,6 @@
-from typing import Set
+from typing import Set, Optional
+
+from itertools import chain
 
 from collections import Counter
 from random import randrange
@@ -13,7 +15,7 @@ class Collision(Exception):
     pass
 
 
-def make_fruit():
+def make_fruit() -> str:
     return chr(randrange(0x1F345, 0x1F354))
 
 
@@ -28,10 +30,10 @@ class Gameplay:
         self.food = {center: chr(0x1F34E)}
         self.snake = Snake(center)
 
-    def direct(self, d):
+    def direct(self, d: Optional[Pair]) -> int:
         return 2 if self.snake.direct(d) in direction.HORIZON else 3
 
-    def reset(self):
+    def reset(self) -> None:
         self.eaten = 0
         if self.snake is not None:
             self.gui.clear(self.snake.get_points())
@@ -40,8 +42,9 @@ class Gameplay:
     c: int = 0
     MAX_BRICKS: int = 20
 
-    def live_step(self):
-        d = Counter()
+    def live_step(self) -> None:
+        d = Counter([(0, 0)])
+        d.clear()
         for yx in self.brickset:
             d.update(self.gui.add(yx, ij) for ij in direction.NEIGHBORS)
                 

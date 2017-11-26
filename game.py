@@ -1,4 +1,5 @@
-from curses_wrap import CursesWindow
+from typing import Optional
+from curses_wrap import CursesWindow, Pair
 import pickle
 
 from gui import Gui
@@ -14,7 +15,7 @@ class Game:
         self.gui = Gui(scr)
         self.game = Gameplay(self.gui, self.gui.center)
         
-    def load(self):
+    def load(self) -> bool:
         try:
             with open(filename, "rb") as f:
                 self.game = pickle.load(f)
@@ -31,7 +32,7 @@ class Game:
     def pause(self) -> None:
         self.gui.pause()
         
-    def loop(self, d) -> int:
+    def loop(self, d: Optional[Pair]) -> int:
         self.delay = self.game.direct(d)
         if self.game.step():
             self.gui.flash()
@@ -44,7 +45,7 @@ class Game:
         self.gui.do_loop(self.loop)
         self.save()
         
-    def init(self):
+    def init(self) -> None:
         self.delay = 0
         self.gui = Gui(self.gui.scr)
 

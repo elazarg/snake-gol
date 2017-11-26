@@ -52,7 +52,7 @@ class Snake:
     def eat(self) -> None:
         self.stretch += 4
 
-    def move(self, yx, change) -> Optional[Pair]:
+    def move(self, yx: Pair, change: bool) -> Optional[Pair]:
         if self.dydx == direction.STOP:
             return None
         old_body = self.tail[0].push_head(yx, change and self.stretch > 0)

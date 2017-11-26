@@ -1,5 +1,5 @@
-from typing import Optional, Callable
-
+from typing import Optional, Callable, Set, Dict, Iterable
+import snake
 import curses_wrap as curses
 from curses_wrap import Pair, CursesWindow
 from random import randint
@@ -23,7 +23,7 @@ WHITE = curses.COLOR_WHITE
 YELLOW = curses.COLOR_YELLOW
 
 
-def wait(delay):
+def wait(delay: int) -> None:
     for _ in times:
         curses.delay_output(factor*delay)
 
@@ -32,7 +32,7 @@ factor: int = 25  # 5000 for textmode
 times = range(1)  # 40 for textmode
 
 
-def flash():
+def flash() -> None:
     for _ in range(4):
         curses.flash()
         curses.delay_output(50)
@@ -78,7 +78,7 @@ class Gui:
         while self.scr.getch() == NOCHAR:
             pass
         
-    def paint(self, brickset, food, snake, old_body, eaten) -> None:
+    def paint(self, brickset: Set[Pair], food: Dict[Pair, str], snake: snake.Snake, old_body: Optional[Pair], eaten: int) -> None:
         self.food_paint(food)
         self.brick_paint(brickset)
              
@@ -92,15 +92,15 @@ class Gui:
         
         self.write_status(snake.head, len(snake.tail), eaten, len(brickset))
             
-    def brick_paint(self, brickset) -> None:
+    def brick_paint(self, brickset: Set[Pair]) -> None:
         for yx in brickset:
             self.addstr(yx, '👽', RED, BOLD)
         
-    def food_paint(self, food) -> None:
+    def food_paint(self, food: Dict[Pair, str]) -> None:
         for yx, c in food.items():
             self.addstr(yx, c, GREEN, BOLD)
     
-    def clear(self, someset) -> None:
+    def clear(self, someset: Iterable[Pair]) -> None:
         for yx in someset:
             self.addstr(yx, ' ')        
         
@@ -152,7 +152,7 @@ class Gui:
         self.statuswin.addstr(0, 0, fmt)
         self.statuswin.refresh()
         
-    def addstr(self, yx: Pair, ch: str = None, color=None, nice=NORMAL):
+    def addstr(self, yx: Pair, ch: str = None, color: int = None, nice: int = NORMAL) -> None:
         y, x = yx  
         att = curses.color_pair(color if color else 0) | nice
         if y >= 0 and x >= 0:
