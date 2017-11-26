@@ -61,6 +61,7 @@ KEY_UP = curses.KEY_UP
 KEY_DOWN = curses.KEY_DOWN
 
 
+# noinspection PyMethodMayBeStatic
 class CursesWindow:
     def getch(self) -> int: return 0
 

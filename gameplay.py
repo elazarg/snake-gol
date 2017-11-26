@@ -1,7 +1,5 @@
 from typing import Set, Optional
 
-from itertools import chain
-
 from collections import Counter
 from random import randrange
 

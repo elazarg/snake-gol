@@ -1,5 +1,5 @@
 from typing import Optional, Callable, Set, Dict, Iterable
-import snake
+from snake import Snake
 import curses_wrap as curses
 from curses_wrap import Pair, CursesWindow
 from random import randint
@@ -78,7 +78,8 @@ class Gui:
         while self.scr.getch() == NOCHAR:
             pass
         
-    def paint(self, brickset: Set[Pair], food: Dict[Pair, str], snake: snake.Snake, old_body: Optional[Pair], eaten: int) -> None:
+    def paint(self, brickset: Set[Pair], food: Dict[Pair, str], snake: Snake,
+              old_body: Optional[Pair], eaten: int) -> None:
         self.food_paint(food)
         self.brick_paint(brickset)
              
