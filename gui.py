@@ -8,7 +8,7 @@ import direction
 
 NOCHAR = -1
 ESC_CHAR = 27
-  
+
 BOLD = curses.A_BOLD
 NORMAL = curses.A_NORMAL
 REVERSE = curses.A_REVERSE
@@ -52,7 +52,7 @@ class Gui:
     minx: int = 1
     maxy: int
     maxx: int
-    
+
     def __init__(self, scr: CursesWindow) -> None:
         self.scr = scr
         curses.start_color()
@@ -63,7 +63,7 @@ class Gui:
         self.clean()
         for i in range(curses.COLORS):
             curses.init_pair(i, i, -1)
-        
+
     def clean(self) -> None:
         self.scr.erase()
         self.maxy, self.maxx = self.scr.getmaxyx()
@@ -77,12 +77,12 @@ class Gui:
     def pause(self) -> None:
         while self.scr.getch() == NOCHAR:
             pass
-        
+
     def paint(self, brickset: Set[Pair], food: Dict[Pair, str], snake: Snake,
               old_body: Optional[Pair], eaten: int) -> None:
         self.food_paint(food)
         self.brick_paint(brickset)
-             
+
         if old_body:
             self.addstr(old_body, ' ')
         for b in reversed(snake.tail):
@@ -90,21 +90,21 @@ class Gui:
             t: Optional[Pair] = b.prev.yx if b.prev else None
             c: str = direction.get_char(s, b.yx, t, b.pic)
             self.addstr(b.yx, c,  YELLOW, BOLD)
-        
+
         self.write_status(snake.head, len(snake.tail), eaten, len(brickset))
-            
+
     def brick_paint(self, brickset: Set[Pair]) -> None:
         for yx in brickset:
             self.addstr(yx, '👽', RED, BOLD)
-        
+
     def food_paint(self, food: Dict[Pair, str]) -> None:
         for yx, c in food.items():
             self.addstr(yx, c, GREEN, BOLD)
-    
+
     def clear(self, someset: Iterable[Pair]) -> None:
         for yx in someset:
-            self.addstr(yx, ' ')        
-        
+            self.addstr(yx, ' ')
+
     @property
     def center(self) -> Pair:
         return (self.maxy // 2, self.maxx // 2)
@@ -112,7 +112,7 @@ class Gui:
     # noinspection PyMethodMayBeStatic
     def flash(self) -> None:
         flash()
-   
+
     def getch(self, delay: int = 0) -> int:
         wait(delay)
         try:
@@ -122,12 +122,12 @@ class Gui:
         if ch == 112:
             self.pause()
         return ch
-    
+
     def do_loop(self, func: Callable[[Optional[Pair]], int]) -> None:
         ch = NOCHAR
         delay = 0
         while ch not in (ESC_CHAR, 113):
-            try: 
+            try:
                 delay = func(meaning[ch])
             except KeyError:
                 pass
@@ -152,15 +152,13 @@ class Gui:
         fmt = st.format(y, x, length, fruits, enemies)
         self.statuswin.addstr(0, 0, fmt)
         self.statuswin.refresh()
-        
+
     def addstr(self, yx: Pair, ch: Optional[str] = None, color: Optional[int] = None, nice: int = NORMAL) -> None:
-        y, x = yx  
+        y, x = yx
         att = curses.color_pair(color if color else 0) | nice
         if y >= 0 and x >= 0:
             self.scr.addch(y, x, ch, att)
 
-    def is_out_of_bounds(self, y: int, x: int) -> bool:
-        return y < self.miny or y > self.maxy or x < self.minx or x > self.maxx
-    
     def random_point(self) -> Pair:
         return (randint(self.miny, self.maxy), randint(self.minx, self.maxx))
+
