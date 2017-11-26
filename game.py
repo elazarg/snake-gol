@@ -1,9 +1,4 @@
-'''
-Created on May 21, 2013
-
-@author: elazar
-'''
-
+from curses_wrap import CursesWindow
 import pickle
 
 from gui import Gui
@@ -14,53 +9,47 @@ filename = '.save.snake'
 
 
 class Game:
-
-    def __init__(self, isnew):
-        self.isnew = isnew
+    def __init__(self, scr: CursesWindow) -> None:
+        self.delay = 0
+        self.gui = Gui(scr)
+        self.game = Gameplay(self.gui, self.gui.center)
         
     def load(self):
         try:
             with open(filename, "rb") as f:
                 self.game = pickle.load(f)
             return True
-        except:
-            self.game = Gameplay()
+        except IOError:
+            self.game = Gameplay(self.gui, self.gui.center)
             return False
             
-    def save(self):
+    def save(self) -> None:
         with open(filename, "wb") as f:
             self.game.gui = None
             pickle.dump(self.game, f)
             
-    def pause(self):
+    def pause(self) -> None:
         self.gui.pause()
         
-    def loop(self, d): 
+    def loop(self, d) -> int:
         self.delay = self.game.direct(d)
         if self.game.step():
             self.gui.flash()
             self.pause()
             self.game.reset()
-            #self.init(True)
         return self.delay
     
-    def play(self, scr):
-        self.init(self.isnew, scr)
+    def play(self) -> None:
+        self.init()
         self.gui.do_loop(self.loop)
         self.save()
         
-    def init(self, new, scr=None):
+    def init(self):
         self.delay = 0
-        self.gui = Gui(scr if scr else self.gui.scr)
-        if new:
-            self.game = Gameplay()
-            self.game.gui = self.gui
-            self.game.reset()
-        else:
-            ok = self.load()
-            self.isnew = False
-            self.game.gui = self.gui
-            if not ok:
-                self.game.reset()
-        assert self.game.snake != None
+        self.gui = Gui(self.gui.scr)
 
+        ok = self.load()
+        self.game.gui = self.gui
+        if not ok:
+            self.game.reset()
+        assert self.game.snake is not None

@@ -1,41 +1,40 @@
-'''
-Created on May 21, 2013
-
-@author: elazar
-'''
 from collections import Counter
 from random import randrange
 
+from curses_wrap import Pair
 from snake import Snake
 import direction
-  
+from gui import Gui
+
+
 class Collision(Exception):
-    __init__ = Exception.__init__
+    pass
 
 
 def make_fruit():
     return chr(randrange(0x1F345, 0x1F354))
 
 
-class Gameplay: 
-    def __init__(self):
+class Gameplay:
+    def __init__(self, gui: Gui, center: Pair) -> None:
+        self.gui = gui
+        self.center = center
         self.brickset = set()
-        self.food = {}
-        self.snake = None
+        self.eaten = 0
+        self.food = {center: chr(0x1F34E)}
+        self.snake = Snake(center)
 
     def direct(self, d):
         return 2 if self.snake.direct(d) in direction.HORIZON else 3
 
     def reset(self):
         self.eaten = 0
-        if self.snake:
+        if self.snake is not None:
             self.gui.clear(self.snake.get_points())
-        self.snake = Snake(self.gui.center)
-        if not self.food:
-            self.food[self.gui.center] = chr(0x1F34E)
+        self.snake = Snake(self.center)
 
-    c = 0
-    MAXBRICKS = 20
+    c: int = 0
+    MAX_BRICKS: int = 20
 
     def live_step(self):
         d = Counter()
@@ -46,29 +45,30 @@ class Gameplay:
             d.update(self.gui.add(yx, z) for z in [(0, -1), (0, 1), (-1, 0), (1, 0)])
                                 
         old = self.brickset
-        self.brickset = { yx for yx, v in d.items()
-                        if v == 3 or v == 2 and yx in self.brickset }
+        self.brickset = {yx for yx, v in d.items()
+                         if v == 3 or v == 2 and yx in self.brickset}
         self.brickset -= set(self.snake.get_points())
         self.brickset -= set(self.food)
         
         self.gui.clear(old - self.brickset)
 
-    def eat(self):
+    def eat(self) -> None:
         self.snake.eat()
         self.eaten += 1                
         while True:
             yx = self.gui.random_point()
-            if yx not in [x.getyx() for x in self.snake.tail] and yx not in self.brickset:
+            tail = [x.yx for x in self.snake.tail]
+            if yx not in tail and yx not in self.brickset:
                 self.food[yx] = make_fruit()
                 break
             
-    def step(self):
-        head = self.snake.tail[0].getyx()
+    def step(self) -> bool:
+        head = self.snake.tail[0].yx
         if head in self.food:
             del self.food[head]
             self.eat()
                 
-        pos = self.gui.add(head, self.snake.dydx) 
+        pos = self.gui.add(head, self.snake.dydx)
         old_body = self.snake.move(pos, self.c % 5 == 0)
         self.c += 1
         
