@@ -73,7 +73,7 @@ def make_direction(s: Pair, t: Pair) -> Pair:
     return (fd(s[0], t[0]), fd(s[1], t[1]))
 
 
-def get_char(s: Optional[Pair], me: Optional[Pair], t: Optional[Pair], i: int = 0) -> str:
+def get_char(s: Optional[Pair], me: Pair, t: Optional[Pair], i: int = 0) -> str:
     array = [MOVEMENT, MOVEMENT2]
     if t and s:
         return array[i][(make_direction(me, t), make_direction(s, me))]

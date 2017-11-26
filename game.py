@@ -25,7 +25,7 @@ class Game:
             
     def save(self) -> None:
         with open(filename, "wb") as f:
-            self.game.gui = None
+            self.game.gui = None  # type: ignore
             pickle.dump(self.game, f)
             
     def pause(self) -> None:

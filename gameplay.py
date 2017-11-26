@@ -1,3 +1,5 @@
+from typing import Set
+
 from collections import Counter
 from random import randrange
 
@@ -16,6 +18,8 @@ def make_fruit():
 
 
 class Gameplay:
+    brickset: Set[Pair]
+
     def __init__(self, gui: Gui, center: Pair) -> None:
         self.gui = gui
         self.center = center

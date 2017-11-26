@@ -5,7 +5,7 @@ import direction
    
 
 class Body:
-    def __init__(self, yx: Pair, nextt: 'Optional[Body]' = None, prev: 'Optional[Body]' = None, pic: int = 0):
+    def __init__(self, yx: Pair, nextt: 'Optional[Body]' = None, prev: 'Optional[Body]' = None, pic: int = 0) -> None:
         self.yx = yx
         self.next = nextt
         self.prev = prev

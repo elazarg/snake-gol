@@ -112,7 +112,7 @@ class Gui:
     def flash(self) -> None:
         flash()
    
-    def getch(self, delay: int = 0) -> str:
+    def getch(self, delay: int = 0) -> int:
         wait(delay)
         try:
             ch = self.scr.getch()
@@ -122,7 +122,7 @@ class Gui:
             self.pause()
         return ch
     
-    def do_loop(self, func: Callable[Optional[Pair], int]) -> None:
+    def do_loop(self, func: Callable[[Optional[Pair]], int]) -> None:
         ch = NOCHAR
         delay = 0
         while ch not in (ESC_CHAR, 113):

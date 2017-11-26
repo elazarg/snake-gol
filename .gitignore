@@ -1,3 +1,4 @@
 .save.snake
 __pycache__
 .idea
+.mypy_cache

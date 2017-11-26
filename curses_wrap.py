@@ -35,7 +35,7 @@ KEY_DOWN = curses.KEY_DOWN
 
 
 class CursesWindow:
-    def getch(self) -> str: return ''
+    def getch(self) -> int: return 0
 
     def subwin(self, _y: int, _x: int, _yy: int, _xx: int) -> 'CursesWindow': return self
 
@@ -49,7 +49,7 @@ class CursesWindow:
 
     def addstr(self, y: int, x: int, text: str) -> None: pass
 
-    def addch(self, y: int, x: int, ch: str, color: int) -> None: pass
+    def addch(self, y: int, x: int, ch: typing.Optional[str], color: int) -> None: pass
 
     def refresh(self) -> None: pass
 
